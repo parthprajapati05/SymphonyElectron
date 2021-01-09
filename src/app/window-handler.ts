@@ -193,6 +193,7 @@ export class WindowHandler {
         },
         {
           preload: path.join(__dirname, '../renderer/_preload-main.js'),
+          enableRemoteModule: true,
         },
       ),
       ...opts,
@@ -914,6 +915,7 @@ export class WindowHandler {
       },
       {
         devTools: isDevEnv,
+        enableRemoteModule: true,
       },
     );
 
@@ -1056,6 +1058,7 @@ export class WindowHandler {
       },
       {
         devTools: true,
+        enableRemoteModule: true,
       },
     );
 
@@ -1201,6 +1204,7 @@ export class WindowHandler {
       },
       {
         devTools: isDevEnv,
+        enableRemoteModule: true,
       },
     );
     const focusedWindow = BrowserWindow.getFocusedWindow();
@@ -1285,6 +1289,7 @@ export class WindowHandler {
       },
       {
         devTools: isDevEnv,
+        enableRemoteModule: true,
       },
     );
     opts.parent = window;
@@ -1344,6 +1349,7 @@ export class WindowHandler {
       },
       {
         devTools: isDevEnv,
+        enableRemoteModule: true,
       },
     );
     // This prevents creating multiple instances of the
@@ -1460,6 +1466,7 @@ export class WindowHandler {
         },
         {
           devTools: isDevEnv,
+          enableRemoteModule: true,
         },
       ),
       ...{ winKey: streamId },
@@ -1571,6 +1578,7 @@ export class WindowHandler {
       },
       {
         devTools: isDevEnv,
+        enableRemoteModule: true,
       },
     );
 
@@ -1967,6 +1975,7 @@ export class WindowHandler {
         nodeIntegration: isNodeEnv,
         contextIsolation: isNodeEnv ? false : this.contextIsolation,
         backgroundThrottling: this.backgroundThrottling,
+        enableRemoteModule: true,
       },
       ...webPreferences,
     };
