@@ -56,6 +56,7 @@ const windowsAccelerator = {
 const macAccelerator = {
   ...{
     zoomIn: 'CommandOrControl+Plus',
+    zoomOut: 'CommandOrControl+-',
   },
 };
 
@@ -321,11 +322,30 @@ export class AppMenu {
     return menu;
   }
 
+  // private getZoomInAccelerator() {
+  //   if (isMac) {
+  //     return macAccelerator.zoomIn;
+  //   } else if (isWindowsOS || isLinux) {
+  //     return windowsAccelerator.zoomIn;
+  //   }
+  // }
+
   /**
    * Builds menu items for view section
    */
   private buildViewMenu(): Electron.MenuItemConstructorOptions {
     logger.info(`app-menu: building view menu`);
+
+    const zoomInAccelerator = isMac
+      ? macAccelerator.zoomIn
+      : isWindowsOS || isLinux
+      ? windowsAccelerator.zoomIn
+      : '';
+    const zoomOutAccelerator = isMac
+      ? macAccelerator.zoomOut
+      : isWindowsOS || isLinux
+      ? windowsAccelerator.zoomOut
+      : '';
     return {
       label: i18n.t('View')(),
       submenu: [
@@ -343,20 +363,14 @@ export class AppMenu {
           label: i18n.t('Actual Size')(),
         }),
         {
-          accelerator: 'Ctrl+=',
+          accelerator: zoomInAccelerator,
           label: i18n.t('Zoom In')(),
-          click: (_item, focusedWindow) =>
-            focusedWindow
-              ? zoomIn(focusedWindow as ICustomBrowserWindow)
-              : null,
+          click: (_item, focusedWindow) => (focusedWindow ? zoomIn() : null),
         },
         {
-          accelerator: 'Ctrl+-',
+          accelerator: zoomOutAccelerator,
           label: i18n.t('Zoom Out')(),
-          click: (_item, focusedWindow) =>
-            focusedWindow
-              ? zoomOut(focusedWindow as ICustomBrowserWindow)
-              : null,
+          click: (_item, focusedWindow) => (focusedWindow ? zoomOut() : null),
         },
         this.buildSeparator(),
         this.assignRoleOrLabel({

@@ -62,6 +62,8 @@ import {
   preventWindowNavigation,
   reloadWindow,
   windowExists,
+  zoomIn,
+  zoomOut,
 } from './window-utils';
 
 const windowSize: string | null = getCommandLineArgs(
@@ -1834,11 +1836,12 @@ export class WindowHandler {
     }
 
     if (isMac) {
-      globalShortcut.register('CmdOrCtrl+Plus', this.onZoomIn);
-      globalShortcut.register('CmdOrCtrl+=', this.onZoomIn);
+      globalShortcut.register('CmdOrCtrl+Plus', zoomIn);
+      globalShortcut.register('CmdOrCtrl+=', zoomIn);
+      globalShortcut.register('Ctrl+-', zoomOut);
     } else if (isWindowsOS || isLinux) {
-      globalShortcut.register('Ctrl+=', this.onZoomIn);
-      globalShortcut.register('Ctrl+-', this.onZoomOut);
+      globalShortcut.register('Ctrl+=', zoomIn);
+      globalShortcut.register('Ctrl+-', zoomOut);
     }
 
     app.on('browser-window-focus', () => {
@@ -1848,11 +1851,11 @@ export class WindowHandler {
       );
       globalShortcut.register('CmdOrCtrl+R', this.onReload);
       if (isMac) {
-        globalShortcut.register('CmdOrCtrl+Plus', this.onZoomIn);
-        globalShortcut.register('CmdOrCtrl+=', this.onZoomIn);
+        globalShortcut.register('CmdOrCtrl+Plus', zoomIn);
+        globalShortcut.register('CmdOrCtrl+=', zoomIn);
       } else if (isWindowsOS || isLinux) {
-        globalShortcut.register('Ctrl+=', this.onZoomIn);
-        globalShortcut.register('Ctrl+-', this.onZoomOut);
+        globalShortcut.register('Ctrl+=', zoomIn);
+        globalShortcut.register('Ctrl+-', zoomOut);
       }
 
       if (this.url && this.url.startsWith('https://corporate.symphony.com')) {
@@ -1925,44 +1928,44 @@ export class WindowHandler {
    * fix on the electron framework
    * https://github.com/electron/electron/issues/15496
    */
-  private onZoomIn(): void {
-    const focusedWindow = BrowserWindow.getFocusedWindow();
-    if (!focusedWindow || !windowExists(focusedWindow)) {
-      return;
-    }
+  // private onZoomIn(): void {
+  //   const focusedWindow = BrowserWindow.getFocusedWindow();
+  //   if (!focusedWindow || !windowExists(focusedWindow)) {
+  //     return;
+  //   }
 
-    if (focusedWindow.getTitle() === 'Screen Sharing Indicator - Symphony') {
-      return;
-    }
+  //   if (focusedWindow.getTitle() === 'Screen Sharing Indicator - Symphony') {
+  //     return;
+  //   }
 
-    // electron/lib/browser/api/menu-item-roles.js row 159
-    const currentZoomFactor = focusedWindow.webContents.getZoomFactor();
+  //   // electron/lib/browser/api/menu-item-roles.js row 159
+  //   const currentZoomFactor = focusedWindow.webContents.getZoomFactor();
 
-    if (currentZoomFactor <= 1.5) {
-      focusedWindow.webContents.setZoomFactor(currentZoomFactor + 0.1);
-    }
-  }
+  //   if (currentZoomFactor <= 1.5) {
+  //     focusedWindow.webContents.setZoomFactor(currentZoomFactor + 0.1);
+  //   }
+  // }
 
   /**
    * Custom zoom out
    */
-  private onZoomOut(): void {
-    const focusedWindow = BrowserWindow.getFocusedWindow();
-    if (!focusedWindow || !windowExists(focusedWindow)) {
-      return;
-    }
+  // private onZoomOut(): void {
+  //   const focusedWindow = BrowserWindow.getFocusedWindow();
+  //   if (!focusedWindow || !windowExists(focusedWindow)) {
+  //     return;
+  //   }
 
-    if (focusedWindow.getTitle() === 'Screen Sharing Indicator - Symphony') {
-      return;
-    }
+  //   if (focusedWindow.getTitle() === 'Screen Sharing Indicator - Symphony') {
+  //     return;
+  //   }
 
-    // electron/lib/browser/api/menu-item-roles.js row 159
-    const currentZoomFactor = focusedWindow.webContents.getZoomFactor();
+  //   // electron/lib/browser/api/menu-item-roles.js row 159
+  //   const currentZoomFactor = focusedWindow.webContents.getZoomFactor();
 
-    if (currentZoomFactor >= 0.7) {
-      focusedWindow.webContents.setZoomFactor(currentZoomFactor - 0.1);
-    }
-  }
+  //   if (currentZoomFactor >= 0.7) {
+  //     focusedWindow.webContents.setZoomFactor(currentZoomFactor - 0.1);
+  //   }
+  // }
 
   /**
    * Switch between clients 1.5, 2.0 and 2.0 daily
