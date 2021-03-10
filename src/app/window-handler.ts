@@ -1836,6 +1836,9 @@ export class WindowHandler {
     if (isMac) {
       globalShortcut.register('CmdOrCtrl+Plus', this.onZoomIn);
       globalShortcut.register('CmdOrCtrl+=', this.onZoomIn);
+    } else if (isWindowsOS || isLinux) {
+      globalShortcut.register('Ctrl+=', this.onZoomIn);
+      globalShortcut.register('Ctrl+-', this.onZoomOut);
     }
 
     app.on('browser-window-focus', () => {
@@ -1847,7 +1850,11 @@ export class WindowHandler {
       if (isMac) {
         globalShortcut.register('CmdOrCtrl+Plus', this.onZoomIn);
         globalShortcut.register('CmdOrCtrl+=', this.onZoomIn);
+      } else if (isWindowsOS || isLinux) {
+        globalShortcut.register('Ctrl+=', this.onZoomIn);
+        globalShortcut.register('Ctrl+-', this.onZoomOut);
       }
+
       if (this.url && this.url.startsWith('https://corporate.symphony.com')) {
         globalShortcut.register(isMac ? 'Cmd+Alt+1' : 'Ctrl+Shift+1', () =>
           this.switchClient(ClientSwitchType.CLIENT_1_5),
@@ -1869,6 +1876,9 @@ export class WindowHandler {
       if (isMac) {
         globalShortcut.unregister('CmdOrCtrl+Plus');
         globalShortcut.unregister('CmdOrCtrl+=');
+      } else if (isWindowsOS || isLinux) {
+        globalShortcut.unregister('Ctrl+=');
+        globalShortcut.unregister('Ctrl+-');
       }
       // Unregister shortcuts related to client switch
       if (this.url && this.url.startsWith('https://corporate.symphony.com')) {
@@ -1926,8 +1936,32 @@ export class WindowHandler {
     }
 
     // electron/lib/browser/api/menu-item-roles.js row 159
-    const currentZoomLevel = focusedWindow.webContents.getZoomLevel();
-    focusedWindow.webContents.setZoomLevel(currentZoomLevel + 0.5);
+    const currentZoomFactor = focusedWindow.webContents.getZoomFactor();
+
+    if (currentZoomFactor <= 1.5) {
+      focusedWindow.webContents.setZoomFactor(currentZoomFactor + 0.1);
+    }
+  }
+
+  /**
+   * Custom zoom out
+   */
+  private onZoomOut(): void {
+    const focusedWindow = BrowserWindow.getFocusedWindow();
+    if (!focusedWindow || !windowExists(focusedWindow)) {
+      return;
+    }
+
+    if (focusedWindow.getTitle() === 'Screen Sharing Indicator - Symphony') {
+      return;
+    }
+
+    // electron/lib/browser/api/menu-item-roles.js row 159
+    const currentZoomFactor = focusedWindow.webContents.getZoomFactor();
+
+    if (currentZoomFactor >= 0.7) {
+      focusedWindow.webContents.setZoomFactor(currentZoomFactor - 0.1);
+    }
   }
 
   /**

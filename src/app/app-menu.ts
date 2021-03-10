@@ -25,7 +25,7 @@ import {
   updateAlwaysOnTop,
 } from './window-actions';
 import { ICustomBrowserWindow, windowHandler } from './window-handler';
-import { reloadWindow, windowExists } from './window-utils';
+import { reloadWindow, windowExists, zoomIn, zoomOut } from './window-utils';
 
 export const menuSections = {
   about: 'about',
@@ -342,11 +342,22 @@ export class AppMenu {
           role: 'resetZoom',
           label: i18n.t('Actual Size')(),
         }),
-        this.assignRoleOrLabel({ role: 'zoomIn', label: i18n.t('Zoom In')() }),
-        this.assignRoleOrLabel({
-          role: 'zoomOut',
+        {
+          accelerator: 'Ctrl+=',
+          label: i18n.t('Zoom In')(),
+          click: (_item, focusedWindow) =>
+            focusedWindow
+              ? zoomIn(focusedWindow as ICustomBrowserWindow)
+              : null,
+        },
+        {
+          accelerator: 'Ctrl+-',
           label: i18n.t('Zoom Out')(),
-        }),
+          click: (_item, focusedWindow) =>
+            focusedWindow
+              ? zoomOut(focusedWindow as ICustomBrowserWindow)
+              : null,
+        },
         this.buildSeparator(),
         this.assignRoleOrLabel({
           role: 'togglefullscreen',

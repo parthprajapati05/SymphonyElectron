@@ -689,6 +689,35 @@ export const reloadWindow = (browserWindow: ICustomBrowserWindow) => {
   }
 };
 
+export const zoomIn = (browserWindow: ICustomBrowserWindow) => {
+  if (!browserWindow || !windowExists(browserWindow)) {
+    return;
+  }
+  const focusedWindow = BrowserWindow.getFocusedWindow();
+
+  if (focusedWindow) {
+    const { webContents } = focusedWindow;
+    const zoomFactor = webContents.getZoomFactor();
+    if (zoomFactor <= 1.5) {
+      webContents.setZoomFactor(zoomFactor + 0.1);
+    }
+  }
+};
+
+export const zoomOut = (browserWindow: ICustomBrowserWindow) => {
+  if (!browserWindow || !windowExists(browserWindow)) {
+    return;
+  }
+  const focusedWindow = BrowserWindow.getFocusedWindow();
+
+  if (focusedWindow) {
+    const { webContents } = focusedWindow;
+    const zoomFactor = webContents.getZoomFactor();
+    if (zoomFactor <= 0.7) {
+      webContents.setZoomFactor(zoomFactor - 0.1);
+    }
+  }
+};
 /**
  * Verifies if window exists and restores/focuses the window
  *
