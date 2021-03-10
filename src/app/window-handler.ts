@@ -1838,7 +1838,7 @@ export class WindowHandler {
     if (isMac) {
       globalShortcut.register('CmdOrCtrl+Plus', zoomIn);
       globalShortcut.register('CmdOrCtrl+=', zoomIn);
-      globalShortcut.register('Ctrl+-', zoomOut);
+      globalShortcut.register('CmdOrCtrl+-', zoomOut);
     } else if (isWindowsOS || isLinux) {
       globalShortcut.register('Ctrl+=', zoomIn);
       globalShortcut.register('Ctrl+-', zoomOut);
@@ -1853,6 +1853,7 @@ export class WindowHandler {
       if (isMac) {
         globalShortcut.register('CmdOrCtrl+Plus', zoomIn);
         globalShortcut.register('CmdOrCtrl+=', zoomIn);
+        globalShortcut.register('CmdOrCtrl+-', zoomOut);
       } else if (isWindowsOS || isLinux) {
         globalShortcut.register('Ctrl+=', zoomIn);
         globalShortcut.register('Ctrl+-', zoomOut);
@@ -1879,6 +1880,7 @@ export class WindowHandler {
       if (isMac) {
         globalShortcut.unregister('CmdOrCtrl+Plus');
         globalShortcut.unregister('CmdOrCtrl+=');
+        globalShortcut.unregister('CmdOrCtrl+-');
       } else if (isWindowsOS || isLinux) {
         globalShortcut.unregister('Ctrl+=');
         globalShortcut.unregister('Ctrl+-');
@@ -1922,50 +1924,6 @@ export class WindowHandler {
     }
     reloadWindow(focusedWindow as ICustomBrowserWindow);
   }
-
-  /**
-   * This is a workarround untill we have a
-   * fix on the electron framework
-   * https://github.com/electron/electron/issues/15496
-   */
-  // private onZoomIn(): void {
-  //   const focusedWindow = BrowserWindow.getFocusedWindow();
-  //   if (!focusedWindow || !windowExists(focusedWindow)) {
-  //     return;
-  //   }
-
-  //   if (focusedWindow.getTitle() === 'Screen Sharing Indicator - Symphony') {
-  //     return;
-  //   }
-
-  //   // electron/lib/browser/api/menu-item-roles.js row 159
-  //   const currentZoomFactor = focusedWindow.webContents.getZoomFactor();
-
-  //   if (currentZoomFactor <= 1.5) {
-  //     focusedWindow.webContents.setZoomFactor(currentZoomFactor + 0.1);
-  //   }
-  // }
-
-  /**
-   * Custom zoom out
-   */
-  // private onZoomOut(): void {
-  //   const focusedWindow = BrowserWindow.getFocusedWindow();
-  //   if (!focusedWindow || !windowExists(focusedWindow)) {
-  //     return;
-  //   }
-
-  //   if (focusedWindow.getTitle() === 'Screen Sharing Indicator - Symphony') {
-  //     return;
-  //   }
-
-  //   // electron/lib/browser/api/menu-item-roles.js row 159
-  //   const currentZoomFactor = focusedWindow.webContents.getZoomFactor();
-
-  //   if (currentZoomFactor >= 0.7) {
-  //     focusedWindow.webContents.setZoomFactor(currentZoomFactor - 0.1);
-  //   }
-  // }
 
   /**
    * Switch between clients 1.5, 2.0 and 2.0 daily
