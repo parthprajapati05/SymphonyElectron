@@ -322,14 +322,6 @@ export class AppMenu {
     return menu;
   }
 
-  // private getZoomInAccelerator() {
-  //   if (isMac) {
-  //     return macAccelerator.zoomIn;
-  //   } else if (isWindowsOS || isLinux) {
-  //     return windowsAccelerator.zoomIn;
-  //   }
-  // }
-
   /**
    * Builds menu items for view section
    */
