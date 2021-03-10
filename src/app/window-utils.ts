@@ -697,9 +697,20 @@ export const zoomIn = () => {
 
   if (focusedWindow) {
     const { webContents } = focusedWindow;
-    const zoomFactor = webContents.getZoomFactor();
-    if (zoomFactor <= 1.5) {
-      webContents.setZoomFactor(zoomFactor + 0.1);
+    const zoomFactor = webContents.getZoomFactor().toFixed(2);
+    const roundingFactor = parseFloat(zoomFactor);
+    if (roundingFactor < 1.5) {
+      switch (roundingFactor) {
+        case 1.25:
+          webContents.setZoomFactor(1.5);
+          break;
+        case 1.1:
+          webContents.setZoomFactor(1.25);
+          break;
+        default:
+          webContents.setZoomFactor(roundingFactor + 0.1);
+          break;
+      }
     }
   }
 };
@@ -712,9 +723,23 @@ export const zoomOut = () => {
 
   if (focusedWindow) {
     const { webContents } = focusedWindow;
-    const zoomFactor = webContents.getZoomFactor();
-    if (zoomFactor > 0.7) {
-      webContents.setZoomFactor(zoomFactor - 0.1);
+    const zoomFactor = webContents.getZoomFactor().toFixed(2);
+    const roundingFactor = parseFloat(zoomFactor);
+    if (roundingFactor > 0.7) {
+      switch (roundingFactor) {
+        case 1.5:
+          webContents.setZoomFactor(1.25);
+          break;
+        case 1.25:
+          webContents.setZoomFactor(1.1);
+          break;
+        case 1.1:
+          webContents.setZoomFactor(1.0);
+          break;
+        default:
+          webContents.setZoomFactor(roundingFactor - 0.1);
+          break;
+      }
     }
   }
 };
