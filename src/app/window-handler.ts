@@ -1838,8 +1838,10 @@ export class WindowHandler {
     if (isMac) {
       globalShortcut.register('CmdOrCtrl+Plus', zoomIn);
       globalShortcut.register('CmdOrCtrl+=', zoomIn);
-      globalShortcut.register('CmdOrCtrl+-', zoomOut);
-    } else if (isWindowsOS || isLinux) {
+      if (this.isMana) {
+        globalShortcut.register('CmdOrCtrl+-', zoomOut);
+      }
+    } else if ((this.isMana && isWindowsOS) || isLinux) {
       globalShortcut.register('Ctrl+=', zoomIn);
       globalShortcut.register('Ctrl+-', zoomOut);
     }
@@ -1853,8 +1855,10 @@ export class WindowHandler {
       if (isMac) {
         globalShortcut.register('CmdOrCtrl+Plus', zoomIn);
         globalShortcut.register('CmdOrCtrl+=', zoomIn);
-        globalShortcut.register('CmdOrCtrl+-', zoomOut);
-      } else if (isWindowsOS || isLinux) {
+        if (this.isMana) {
+          globalShortcut.register('CmdOrCtrl+-', zoomOut);
+        }
+      } else if ((this.isMana && isWindowsOS) || isLinux) {
         globalShortcut.register('Ctrl+=', zoomIn);
         globalShortcut.register('Ctrl+-', zoomOut);
       }
@@ -1880,8 +1884,10 @@ export class WindowHandler {
       if (isMac) {
         globalShortcut.unregister('CmdOrCtrl+Plus');
         globalShortcut.unregister('CmdOrCtrl+=');
-        globalShortcut.unregister('CmdOrCtrl+-');
-      } else if (isWindowsOS || isLinux) {
+        if (this.isMana) {
+          globalShortcut.unregister('CmdOrCtrl+-');
+        }
+      } else if ((this.isMana && isWindowsOS) || isLinux) {
         globalShortcut.unregister('Ctrl+=');
         globalShortcut.unregister('Ctrl+-');
       }

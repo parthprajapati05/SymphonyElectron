@@ -354,16 +354,13 @@ export class AppMenu {
           role: 'resetZoom',
           label: i18n.t('Actual Size')(),
         }),
-        {
-          accelerator: zoomInAccelerator,
-          label: i18n.t('Zoom In')(),
-          click: (_item, focusedWindow) => (focusedWindow ? zoomIn() : null),
-        },
-        {
-          accelerator: zoomOutAccelerator,
-          label: i18n.t('Zoom Out')(),
-          click: (_item, focusedWindow) => (focusedWindow ? zoomOut() : null),
-        },
+        this.zoomAccelerator(zoomInAccelerator, 'Zoom In', zoomIn, 'zoomIn'),
+        this.zoomAccelerator(
+          zoomOutAccelerator,
+          'Zoom Out',
+          zoomOut,
+          'zoomOut',
+        ),
         this.buildSeparator(),
         this.assignRoleOrLabel({
           role: 'togglefullscreen',
@@ -715,5 +712,25 @@ export class AppMenu {
         ? AnalyticsActions.ENABLED
         : AnalyticsActions.DISABLED,
     });
+  }
+
+  /**
+   * Build zoom menu for view section
+   */
+  private zoomAccelerator(
+    accelerator: string,
+    label: string,
+    action: () => void,
+    role: MenuItemConstructorOptions['role'],
+  ): MenuItemConstructorOptions {
+    if (windowHandler.isMana) {
+      return {
+        accelerator,
+        label: i18n.t(label)(),
+        click: (_item, focusedWindow) => (focusedWindow ? action() : null),
+      };
+    } else {
+      return this.assignRoleOrLabel({ role, label: i18n.t(label)() });
+    }
   }
 }
